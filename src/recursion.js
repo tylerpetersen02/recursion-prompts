@@ -7,39 +7,88 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
-	if (n < 0) {
-  return null;
-  } if (n === 0) {
+  if (n < 0) {
+    return null;
+  }
+  if (n === 0) {
     return 1;
   }
   if (n > 0) {
-  return n * (factorial(n-1));
+    return n * (factorial(n - 1));
   }
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+  var arr2 = array.slice();
+  if (arr2.length === 0) {
+  	return 0;
+  }
+  return arr2.pop() + sum(arr2);
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+  var result = 0;
+  if (!Array.isArray(array)) {
+    return array;
+  }
+  array.forEach(function(item) {
+    result += arraySum(item);
+  });
+  return result;
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  if (Math.abs(n) === 0) {
+    return true;
+  }
+  if (Math.abs(n) === 1) {
+    return false;
+  }
+  return isEven(Math.abs(n) - 2);
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+  if (n === 0) {
+    return 0;
+  }
+  if (n > 0) {
+    return (n - 1) + sumBelow(n - 1);
+  } else {
+    return (n + 1) + sumBelow(n + 1);
+  }
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+  var result = [];
+
+  if (x <= (y - 1)) {
+    if (x === (y - 1)) {
+      return result;
+    } else {
+      x++;
+      result.push(x);
+      return result.concat(range(x, y));
+    }
+  } else if (x >= (y + 1)) {
+  console.log(x);
+    if (x === (y + 1)) {
+      return result;
+    } else {
+      x--;
+      result.push(x);
+      return result.concat(range(x, y));
+    }
+  }
 };
 
 // 7. Compute the exponent of a number.
@@ -48,6 +97,13 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+	if (exp === 0) {
+  	return 1;
+  }
+  if (exp > 0) {
+    exp--;
+    return base * exponent(base, exp);
+  }
 };
 
 // 8. Determine if a number is a power of two.
@@ -55,14 +111,38 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  if (n >= 0 && n <= 2) {
+    return true;
+  }
+  if (n > 2) {
+    n = n / 2;
+    return powerOfTwo(n);
+  }
+  return false;
 };
 
 // 9. Write a function that reverses a string.
-var reverse = function(string) {
+var powerOfTwo = function(n) {
+  if (n === 1) {
+    return true;
+  } else if (n < 1) {
+    return false;
+  } else {
+    return powerOfTwo(n / 2);
+  }
 };
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  string = string.toLowerCase();
+  if (string.length >= 1) {
+    if (string[0] !== string[string.length - 1]) {
+      return false;
+    } else if (string[0] === string[string.length - 1]) {
+      return true;
+    }
+    return palindrome(string.slice(1, string.length - 1));
+  }
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -144,6 +224,18 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  var countValuesInObj = function(obj, value) {
+    var result = 0;
+    for (var key in obj) {
+      var item = obj[key];
+      if (typeof item === 'object') {
+        result += countValuesInObj(item, value);
+      } else if (item === value) {
+        result++;
+      }
+    }
+    return result;
+  };
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
