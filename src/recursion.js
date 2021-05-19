@@ -143,11 +143,23 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
 var multiply = function(x, y) {
+  if (y !== 0) {
+    if (y < 0 && x > 0) {
+      return multiply(y, x);
+    }
+    if (x < 0 && y < 0) {
+      return (x - multiply(x, y + 1));
+    }
+    return (x + multiply(x, y - 1));
+  } else {
+      return 0;
+  }
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
@@ -197,11 +209,31 @@ var fizzBuzz = function(n) {
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+  var result = 0;
+  if (array[0] === value) {
+    result++;
+  }
+  array.shift();
+  if (array.length !== 0) {
+    result += countOccurrence(array, value)
+  }
+  return result;
 };
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+  if (array.length === 0) {
+    return [];
+  }
+  var newArr = array.slice();
+  var result = [];
+  result.push(callback(newArr[0]));
+  newArr.shift();
+  if (newArr.length !== 0) {
+    result.push(rMap(newArr, callback));
+  }
+  return result.flat();
 };
 
 // 22. Write a function that counts the number of times a key occurs in an object.
@@ -209,6 +241,19 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, key) {
+  var result = 0;
+  for (var key1 in obj) {
+    var item = obj[key1];
+    var target = key1;
+    console.log(target);
+    if (typeof item === 'object') {
+      result += countKeysInObj(item, key);
+    }
+    if (key === target) {
+      result++;
+    }
+  }
+  return result;
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
